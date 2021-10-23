@@ -1,0 +1,25 @@
+name: Prettyfying Apex Code
+
+on: 
+  pull_request:
+    branches: [main]
+
+jobs: 
+  prettify-apex-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node And Prettier
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install --global prettier prettier-plugin-apex
+      - run: prettier --write "**/*.{trigger,cls}"
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Dejando el codigo bonito
+          branch: ${{ github.head_ref }}
